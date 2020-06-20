@@ -71,7 +71,7 @@ Devtektok_Info_Sudo:close()
 local Run_File_tektok = io.open("TekTok", 'w')
 Run_File_tektok:write([[
 #!/usr/bin/env bash
-cd $HOME/Storm
+THIS_DIR=$(cd $(dirname $0); pwd)
 token="]]..redis:get(Server_Tektok.."Token_Devtektok")..[["
 while(true) do
 rm -fr ../.telegram-cli
@@ -82,8 +82,8 @@ Run_File_tektok:close()
 ------------------------------------------------------------------------------------------------------------
 local Run_SM = io.open("tk", 'w')
 Run_SM:write([[
-#!/usr/bin/env bash
-cd $HOME/Storm
+##!/usr/bin/env bash
+THIS_DIR=$(cd $(dirname $0); pwd)
 while(true) do
 rm -fr ../.telegram-cli
 screen -S Tektok -X kill
@@ -115,7 +115,6 @@ UserName_Dev = sudos.UserName_tektok
 bot_id = token:match("(%d+)")  
 Id_Dev = sudos.Id_Devtektok
 Ids_Dev = {sudos.Id_Devtektok,373906612,bot_id}
-Name_Bot = redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك"
 ------------------------------------------------------------------------------------------------------------
 function var(value)  
 print(serpent.block(value, {comment=false}))   
@@ -2344,7 +2343,7 @@ else
 if not redis:get(bot_id..'Ban:Cmd:Start'..msg.sender_user_id_) then
 local GetCmdStart = redis:get(bot_id.."Set:Cmd:Start:Bot")  
 if not GetCmdStart then 
-CmdStart = '\n⌔︙أهلآ بك في بوت '..Name_Bot..''..
+CmdStart = '\n⌔︙أهلآ بك في بوت '..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..''..
 '\n⌔︙اختصاص البوت حماية المجموعات'..
 '\n⌔︙لتفعيل البوت عليك اتباع مايلي ...'..
 '\n⌔︙اضف البوت الى مجموعتك'..
@@ -2752,13 +2751,13 @@ end
 end 
 end
 if TypeForChat == ("ForSuppur") then
-if text ==  ""..Name_Bot..' شنو رئيك بهاذا' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id.."Status:Fun:Bots"..msg.chat_id_) then     
+if text ==  ""..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..' شنو رئيك بهاذا' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id.."Status:Fun:Bots"..msg.chat_id_) then     
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, function(Arg,Data) 
 local Text_Fun = {'لوكي وزاحف من ساع زحفلي وحضرته 😒','خوش ولد و ورده مال الله 🙄','يلعب ع البنات 🙄', 'ولد زايعته الكاع 😶🙊','صاك يخبل ومعضل ','محلو وشواربه جنها مكناسه 😂🤷🏼‍♀️','اموت عليه 🌝','هوه غير الحب مال اني ❤️','مو خوش ولد صراحه ☹️','ادبسز وميحترم البنات  ', 'فد واحد قذر 🙄😒','ماطيقه كل ما اكمشه ريحته جنها بخاخ بف باف مال حشرات 😂🤷‍♀️','مو خوش ولد 🤓' } 
 send(msg.chat_id_, Data.id_,''..Text_Fun[math.random(#Text_Fun)]..'')   
 end,nil)
 return false
-elseif text == ""..Name_Bot..' شنو رئيك بهاي' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id.."Status:Fun:Bots"..msg.chat_id_) then    
+elseif text == ""..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..' شنو رئيك بهاي' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id.."Status:Fun:Bots"..msg.chat_id_) then    
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)},function(Arg, Data) 
 local Text_Fun = {'الكبد مال اني هيه ','ختولي ماحبها ','خانتني ويه صديقي 😔','بس لو الكفها اله اعضها 💔','خوش بنيه بس عده مكسرات زايده وناقصه منا ومنا وهيه تدري بنفسها 😒','جذابه ومنافقه سوتلي مشكله ويه الحب مالتي ','ئووووووووف اموت ع ربها ','ديرو بالكم منها تلعب ع الولد 😶 ضحكت ع واحد قطته ايفون 7 ','صديقتي وختي وروحي وحياتي ','فد وحده منحرفه 😥','ساكنه بالعلاوي ونته حدد بعد لسانها لسان دلاله 🙄🤐','ام سحوره سحرت اخويا وعلكته 6 سنوات 🤕','ماحبها 🙁','بله هاي جهره تسئل عليها ؟ ','بربك ئنته والله فارغ وبطران وماعدك شي تسوي جاي تسئل ع بنات العالم ولي يله 🏼','ياخي بنيه حبوبه بس لبعرك معمي عليها تشرب هواي 😹' } 
 send(msg.chat_id_,Data.id_,''..Text_Fun[math.random(#Text_Fun)]..'') 
@@ -5572,7 +5571,7 @@ send(msg.chat_id_, msg.id_,"⌔︙تم حبيبي حغادر")
 send(GP_ID[2], 0,"⌔︙ تم مغادرة المجموعه بامر من مطور البوت") 
 redis:srem(bot_id.."ChekBotAdd",GP_ID[2])  
 end
-elseif text == Name_Bot then
+elseif text == (redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك") then
 local namebot = {
 "لابسك لتلح",
 "لاتوصخ اسمي",
@@ -5584,8 +5583,8 @@ name = math.random(#namebot)
 send(msg.chat_id_, msg.id_, namebot[name]) 
 elseif text == "بوت" then
 local BotName = {
-"باوع لك خليني احبك وصيحلي باسمي "..Name_Bot.. "",
-"لتخليني ارجع لحركاتي لقديمه وردا ترا اسمي "..Name_Bot.. "",
+"باوع لك خليني احبك وصيحلي باسمي "..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك").. "",
+"لتخليني ارجع لحركاتي لقديمه وردا ترا اسمي "..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك").. "",
 "راح نموت بكورونا ونته بعدك تصيح بوت"
 }
 BotNameText = math.random(#BotName)
@@ -7139,8 +7138,8 @@ if msg.date_ and msg.date_ < tonumber(os.time() - 30) then
 print("->> Old Message End <<-")
 return false
 end
-if text and text:match('^'..Name_Bot..' ') then
-data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..Name_Bot..' ','')
+if text and text:match('^'..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..' ') then
+data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..' ','')
 end
 if text then
 local NewCmmd = redis:get(bot_id.."Get:Reides:Commands:Group"..msg.chat_id_..":"..data.message_.content_.text_)
