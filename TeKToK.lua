@@ -71,7 +71,7 @@ Devtektok_Info_Sudo:close()
 local Run_File_tektok = io.open("TekTok", 'w')
 Run_File_tektok:write([[
 #!/usr/bin/env bash
-THIS_DIR=$(cd $(dirname $0); pwd)
+cd $HOME/Storm
 token="]]..redis:get(Server_Tektok.."Token_Devtektok")..[["
 while(true) do
 rm -fr ../.telegram-cli
@@ -82,8 +82,8 @@ Run_File_tektok:close()
 ------------------------------------------------------------------------------------------------------------
 local Run_SM = io.open("tk", 'w')
 Run_SM:write([[
-##!/usr/bin/env bash
-THIS_DIR=$(cd $(dirname $0); pwd)
+#!/usr/bin/env bash
+cd $HOME/Storm
 while(true) do
 rm -fr ../.telegram-cli
 screen -S Tektok -X kill
@@ -115,6 +115,7 @@ UserName_Dev = sudos.UserName_tektok
 bot_id = token:match("(%d+)")  
 Id_Dev = sudos.Id_Devtektok
 Ids_Dev = {sudos.Id_Devtektok,373906612,bot_id}
+Name_Bot = redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك"
 ------------------------------------------------------------------------------------------------------------
 function var(value)  
 print(serpent.block(value, {comment=false}))   
@@ -2343,7 +2344,7 @@ else
 if not redis:get(bot_id..'Ban:Cmd:Start'..msg.sender_user_id_) then
 local GetCmdStart = redis:get(bot_id.."Set:Cmd:Start:Bot")  
 if not GetCmdStart then 
-CmdStart = '\n⌔︙أهلآ بك في بوت '..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..''..
+CmdStart = '\n⌔︙أهلآ بك في بوت '..Name_Bot..''..
 '\n⌔︙اختصاص البوت حماية المجموعات'..
 '\n⌔︙لتفعيل البوت عليك اتباع مايلي ...'..
 '\n⌔︙اضف البوت الى مجموعتك'..
@@ -2751,13 +2752,13 @@ end
 end 
 end
 if TypeForChat == ("ForSuppur") then
-if text ==  ""..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..' شنو رئيك بهاذا' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id.."Status:Fun:Bots"..msg.chat_id_) then     
+if text ==  ""..Name_Bot..' شنو رئيك بهاذا' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id.."Status:Fun:Bots"..msg.chat_id_) then     
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, function(Arg,Data) 
 local Text_Fun = {'لوكي وزاحف من ساع زحفلي وحضرته 😒','خوش ولد و ورده مال الله 🙄','يلعب ع البنات 🙄', 'ولد زايعته الكاع 😶🙊','صاك يخبل ومعضل ','محلو وشواربه جنها مكناسه 😂🤷🏼‍♀️','اموت عليه 🌝','هوه غير الحب مال اني ❤️','مو خوش ولد صراحه ☹️','ادبسز وميحترم البنات  ', 'فد واحد قذر 🙄😒','ماطيقه كل ما اكمشه ريحته جنها بخاخ بف باف مال حشرات 😂🤷‍♀️','مو خوش ولد 🤓' } 
 send(msg.chat_id_, Data.id_,''..Text_Fun[math.random(#Text_Fun)]..'')   
 end,nil)
 return false
-elseif text == ""..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..' شنو رئيك بهاي' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id.."Status:Fun:Bots"..msg.chat_id_) then    
+elseif text == ""..Name_Bot..' شنو رئيك بهاي' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id.."Status:Fun:Bots"..msg.chat_id_) then    
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)},function(Arg, Data) 
 local Text_Fun = {'الكبد مال اني هيه ','ختولي ماحبها ','خانتني ويه صديقي 😔','بس لو الكفها اله اعضها 💔','خوش بنيه بس عده مكسرات زايده وناقصه منا ومنا وهيه تدري بنفسها 😒','جذابه ومنافقه سوتلي مشكله ويه الحب مالتي ','ئووووووووف اموت ع ربها ','ديرو بالكم منها تلعب ع الولد 😶 ضحكت ع واحد قطته ايفون 7 ','صديقتي وختي وروحي وحياتي ','فد وحده منحرفه 😥','ساكنه بالعلاوي ونته حدد بعد لسانها لسان دلاله 🙄🤐','ام سحوره سحرت اخويا وعلكته 6 سنوات 🤕','ماحبها 🙁','بله هاي جهره تسئل عليها ؟ ','بربك ئنته والله فارغ وبطران وماعدك شي تسوي جاي تسئل ع بنات العالم ولي يله 🏼','ياخي بنيه حبوبه بس لبعرك معمي عليها تشرب هواي 😹' } 
 send(msg.chat_id_,Data.id_,''..Text_Fun[math.random(#Text_Fun)]..'') 
@@ -2770,7 +2771,96 @@ if Data.content_.document_ then
 SetFile_Groups(msg,msg.chat_id_,Data.content_.document_.document_.persistent_id_ ,Data.content_.document_.file_name_)
 end;end,nil)
 end
-
+if text == ("اضف مطور") and tonumber(msg.reply_to_message_id_) ~= 0 and Dev_tektok(msg) then
+local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TekToK ~= true then
+send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
+return false 
+end
+function FunctionStatus(arg, result)
+redis:sadd(bot_id.."Developer:Bot", result.sender_user_id_)
+Send_Options(msg,result.sender_user_id_,"reply","⌔︙تم ترقيته مطور في البوت")  
+end
+tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, FunctionStatus, nil)
+return false
+end
+if text == ("حذف مطور") and tonumber(msg.reply_to_message_id_) ~= 0 and Dev_tektok(msg) then
+local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TekToK ~= true then
+send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
+return false 
+end
+function FunctionStatus(arg, result)
+redis:srem(bot_id.."Developer:Bot", result.sender_user_id_)
+Send_Options(msg,result.sender_user_id_,"reply","⌔︙تم تنزيله من المطورين")  
+end
+tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, FunctionStatus, nil)
+return false
+end
+if text and text:match("^اضف مطور @(.*)$") and Dev_tektok(msg) then
+local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TekToK ~= true then
+send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
+return false 
+end
+function FunctionStatus(arg, result)
+if (result.id_) then
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+send(msg.chat_id_,msg.id_,"⌔︙عذرا اذا معرف قناة")   
+return false 
+end      
+redis:sadd(bot_id.."Developer:Bot", result.id_)
+Send_Options(msg,result.id_,"reply","⌔︙تم ترقيته مطور في البوت")  
+else
+send(msg.chat_id_, msg.id_,"⌔︙المعرف غلط ")
+end
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = text:match("^اضف مطور @(.*)$")}, FunctionStatus, nil)
+return false
+end
+if text and text:match("^حذف مطور @(.*)$") and Dev_tektok(msg) then
+local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TekToK ~= true then
+send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
+return false 
+end
+function FunctionStatus(arg, result)
+if (result.id_) then
+redis:srem(bot_id.."Developer:Bot", result.id_)
+Send_Options(msg,result.id_,"reply","⌔︙تم تنزيله من المطورين")  
+else
+send(msg.chat_id_, msg.id_,"⌔︙المعرف غلط ")
+end
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = text:match("^حذف مطور @(.*)$")}, FunctionStatus, nil)
+return false
+end
+if text and text:match("^اضف مطور (%d+)$") and Dev_tektok(msg) then
+local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TekToK ~= true then
+send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
+return false 
+end
+redis:sadd(bot_id.."Developer:Bot", text:match("^اضف مطور (%d+)$"))
+Send_Options(msg,text:match("^اضف مطور (%d+)$"),"reply","⌔︙تم ترقيته مطور في البوت")  
+return false
+end
+if text and text:match("^حذف مطور (%d+)$") and Dev_tektok(msg) then
+local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TekToK ~= true then
+send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
+return false 
+end
+redis:srem(bot_id.."Developer:Bot", text:match("^حذف مطور (%d+)$"))
+Send_Options(msg,text:match("^حذف مطور (%d+)$"),"reply","⌔︙تم تنزيله من المطورين")  
+return false
+end
 if text == 'جلب نسخه احتياطيه' and Dev_tektok(msg) or text == 'جلب نسخه الكروبات' and Dev_tektok(msg) then
 local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
 data = JSON.decode(url)
@@ -3279,30 +3369,7 @@ redis:srem(bot_id.."Removal:User:Groups", result.sender_user_id_)
 Send_Options(msg,result.sender_user_id_,"reply","⌔︙تم الغاء حظره عام من المجموعات")  
 end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, FunctionStatus, nil)
-elseif text == ("اضف مطور") and tonumber(msg.reply_to_message_id_) ~= 0 and Dev_tektok(msg) then
-local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
-data = JSON.decode(url)
-if data.Ch_Member.TekToK ~= true then
-send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
-return false 
-end
-function FunctionStatus(arg, result)
-redis:sadd(bot_id.."Developer:Bot", result.sender_user_id_)
-Send_Options(msg,result.sender_user_id_,"reply","⌔︙تم ترقيته مطور في البوت")  
-end
-tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, FunctionStatus, nil)
-elseif text == ("حذف مطور") and tonumber(msg.reply_to_message_id_) ~= 0 and Dev_tektok(msg) then
-local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
-data = JSON.decode(url)
-if data.Ch_Member.TekToK ~= true then
-send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
-return false 
-end
-function FunctionStatus(arg, result)
-redis:srem(bot_id.."Developer:Bot", result.sender_user_id_)
-Send_Options(msg,result.sender_user_id_,"reply","⌔︙تم تنزيله من المطورين")  
-end
-tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, FunctionStatus, nil)
+
 elseif text == ("رفع منشئ اساسي") and tonumber(msg.reply_to_message_id_) ~= 0 and DeveloperBot(msg) then
 local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
 data = JSON.decode(url)
@@ -3623,42 +3690,7 @@ send(msg.chat_id_, msg.id_,"⌔︙المعرف غلط ")
 end
 end
 tdcli_function ({ID = "SearchPublicChat",username_ = text:match("^الغاء العام @(.*)$") }, FunctionStatus, nil)
-elseif text and text:match("^اضف مطور @(.*)$") and Dev_tektok(msg) then
-local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
-data = JSON.decode(url)
-if data.Ch_Member.TekToK ~= true then
-send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
-return false 
-end
-function FunctionStatus(arg, result)
-if (result.id_) then
-if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
-send(msg.chat_id_,msg.id_,"⌔︙عذرا اذا معرف قناة")   
-return false 
-end      
-redis:sadd(bot_id.."Developer:Bot", result.id_)
-Send_Options(msg,result.id_,"reply","⌔︙تم ترقيته مطور في البوت")  
-else
-send(msg.chat_id_, msg.id_,"⌔︙المعرف غلط ")
-end
-end
-tdcli_function ({ID = "SearchPublicChat",username_ = text:match("^اضف مطور @(.*)$")}, FunctionStatus, nil)
-elseif text and text:match("^حذف مطور @(.*)$") and Dev_tektok(msg) then
-local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
-data = JSON.decode(url)
-if data.Ch_Member.TekToK ~= true then
-send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
-return false 
-end
-function FunctionStatus(arg, result)
-if (result.id_) then
-redis:srem(bot_id.."Developer:Bot", result.id_)
-Send_Options(msg,result.id_,"reply","⌔︙تم تنزيله من المطورين")  
-else
-send(msg.chat_id_, msg.id_,"⌔︙المعرف غلط ")
-end
-end
-tdcli_function ({ID = "SearchPublicChat",username_ = text:match("^حذف مطور @(.*)$")}, FunctionStatus, nil)
+
 elseif text and text:match("^رفع منشئ اساسي @(.*)$") and DeveloperBot(msg) then
 local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
 data = JSON.decode(url)
@@ -4237,25 +4269,7 @@ redis:srem(bot_id.."Removal:User:Groups", text:match("^الغاء العام (%d
 Send_Options(msg,text:match("^الغاء العام (%d+)$"),"reply","⌔︙تم الغاء حظره عام من المجموعات")  
 return false
 end
-if text and text:match("^اضف مطور (%d+)$") and Dev_tektok(msg) then
-local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
-data = JSON.decode(url)
-if data.Ch_Member.TekToK ~= true then
-send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
-return false 
-end
-redis:sadd(bot_id.."Developer:Bot", text:match("^اضف مطور (%d+)$"))
-Send_Options(msg,text:match("^اضف مطور (%d+)$"),"reply","⌔︙تم ترقيته مطور في البوت")  
-elseif text and text:match("^حذف مطور (%d+)$") and Dev_tektok(msg) then
-local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
-data = JSON.decode(url)
-if data.Ch_Member.TekToK ~= true then
-send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
-return false 
-end
-redis:srem(bot_id.."Developer:Bot", text:match("^حذف مطور (%d+)$"))
-Send_Options(msg,text:match("^حذف مطور (%d+)$"),"reply","⌔︙تم تنزيله من المطورين")  
-elseif text and text:match("^رفع منشئ اساسي (%d+)$") and DeveloperBot(msg) then
+if text and text:match("^رفع منشئ اساسي (%d+)$") and DeveloperBot(msg) then
 local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
 data = JSON.decode(url)
 if data.Ch_Member.TekToK ~= true then
@@ -5571,7 +5585,7 @@ send(msg.chat_id_, msg.id_,"⌔︙تم حبيبي حغادر")
 send(GP_ID[2], 0,"⌔︙ تم مغادرة المجموعه بامر من مطور البوت") 
 redis:srem(bot_id.."ChekBotAdd",GP_ID[2])  
 end
-elseif text == (redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك") then
+elseif text == Name_Bot then
 local namebot = {
 "لابسك لتلح",
 "لاتوصخ اسمي",
@@ -5583,8 +5597,8 @@ name = math.random(#namebot)
 send(msg.chat_id_, msg.id_, namebot[name]) 
 elseif text == "بوت" then
 local BotName = {
-"باوع لك خليني احبك وصيحلي باسمي "..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك").. "",
-"لتخليني ارجع لحركاتي لقديمه وردا ترا اسمي "..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك").. "",
+"باوع لك خليني احبك وصيحلي باسمي "..Name_Bot.. "",
+"لتخليني ارجع لحركاتي لقديمه وردا ترا اسمي "..Name_Bot.. "",
 "راح نموت بكورونا ونته بعدك تصيح بوت"
 }
 BotNameText = math.random(#BotName)
@@ -7138,8 +7152,8 @@ if msg.date_ and msg.date_ < tonumber(os.time() - 30) then
 print("->> Old Message End <<-")
 return false
 end
-if text and text:match('^'..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..' ') then
-data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..(redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك")..' ','')
+if text and text:match('^'..Name_Bot..' ') then
+data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..Name_Bot..' ','')
 end
 if text then
 local NewCmmd = redis:get(bot_id.."Get:Reides:Commands:Group"..msg.chat_id_..":"..data.message_.content_.text_)
