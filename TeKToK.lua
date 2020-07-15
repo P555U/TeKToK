@@ -71,7 +71,7 @@ Devtektok_Info_Sudo:close()
 local Run_File_tektok = io.open("TekTok", 'w')
 Run_File_tektok:write([[
 #!/usr/bin/env bash
-cd $HOME/Storm
+cd $HOME/TeKToK
 token="]]..redis:get(Server_Tektok.."Token_Devtektok")..[["
 while(true) do
 rm -fr ../.telegram-cli
@@ -83,7 +83,7 @@ Run_File_tektok:close()
 local Run_SM = io.open("tk", 'w')
 Run_SM:write([[
 #!/usr/bin/env bash
-cd $HOME/Storm
+cd $HOME/TeKToK
 while(true) do
 rm -fr ../.telegram-cli
 screen -S Tektok -X kill
@@ -2862,121 +2862,74 @@ Send_Options(msg,text:match("^حذف مطور (%d+)$"),"reply","⌔︙تم تن�
 return false
 end
 if text == 'جلب نسخه احتياطيه' and Dev_tektok(msg) or text == 'جلب نسخه الكروبات' and Dev_tektok(msg) then
-local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
-data = JSON.decode(url)
-if data.Ch_Member.TekToK ~= true then
-send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة البوت \n⌔︙قناة البوت ← { @b666P }')   
-return false 
-end
-local Groups = redis:smembers(bot_id..'ChekBotAdd')  
-local Get_Json = '{"IdBot": '..bot_id..',"Groups":{'  
-for k,v in pairs(Groups) do   
-local President = redis:smembers(bot_id.."President:Group"..v)
-local Constructor = redis:smembers(bot_id.."Constructor:Group"..v)
-local Manager = redis:smembers(bot_id.."Manager:Group"..v)
-local Admin = redis:smembers(bot_id.."Admin:Group"..v)
-local Vips = redis:smembers(bot_id.."Vip:Group"..v)
-local LinkGroup = redis:get(bot_id.."Status:link:set:Group"..v) 
-local WelcomeGroup = redis:get(bot_id.."Get:Welcome:Group"..v) or ''
-local Status_Dev = redis:get(bot_id.."Developer:Bot:Reply"..v) 
-local Status_Prt = redis:get(bot_id.."President:Group:Reply"..v) 
-local Status_Cto = redis:get(bot_id.."Constructor:Group:Reply"..v) 
-local Status_Own = redis:get(bot_id.."Manager:Group:Reply"..v) 
-local Status_Md = redis:get(bot_id.."Admin:Group:Reply"..v) 
-local Status_Vip = redis:get(bot_id.."Vip:Group:Reply"..v) 
-local Status_Mem = redis:get(bot_id.."Mempar:Group:Reply"..v) 
+local list = redis:smembers(bot_id..'ChekBotAdd')  
+local t = '{"IdBot": '..bot_id..',"Groups":{'  
+for k,v in pairs(list) do   
+NAME = 'Tshake Chat'
+ASAS = redis:smembers(bot_id.."President:Group"..v)
+MNSH = redis:smembers(bot_id.."Constructor:Group"..v)
+MDER = redis:smembers(bot_id.."Manager:Group"..v)
+MOD = redis:smembers(bot_id.."Admin:Group"..v)
+link = redis:get(bot_id.."Status:link:set:Group"..v) or ''
 if k == 1 then
-Get_Json = Get_Json..'"'..v..'":{'
+t = t..'"'..v..'":{"tek":"'..NAME..'",'
 else
-Get_Json = Get_Json..',"'..v..'":{'
+t = t..',"'..v..'":{"tek":"'..NAME..'",'
 end
-if #President ~= 0 then 
-Get_Json = Get_Json..'"President":['
-for k,v in pairs(President) do
+if #ASAS ~= 0 then 
+t = t..'"President":['
+for k,v in pairs(ASAS) do
 if k == 1 then
-Get_Json = Get_Json..'"'..v..'"'
+t =  t..'"'..v..'"'
 else
-Get_Json = Get_Json..',"'..v..'"'
+t =  t..',"'..v..'"'
 end
 end   
-Get_Json = Get_Json..'],'
+t = t..'],'
 end
-if #Constructor ~= 0 then
-Get_Json = Get_Json..'"Constructor":['
-for k,v in pairs(Constructor) do
+if #MOD ~= 0 then
+t = t..'"Admin":['
+for k,v in pairs(MOD) do
 if k == 1 then
-Get_Json = Get_Json..'"'..v..'"'
+t =  t..'"'..v..'"'
 else
-Get_Json = Get_Json..',"'..v..'"'
+t =  t..',"'..v..'"'
 end
 end   
-Get_Json = Get_Json..'],'
+t = t..'],'
 end
-if #Manager ~= 0 then
-Get_Json = Get_Json..'"Manager":['
-for k,v in pairs(Manager) do
+if #MDER ~= 0 then
+t = t..'"Manager":['
+for k,v in pairs(MDER) do
 if k == 1 then
-Get_Json = Get_Json..'"'..v..'"'
+t =  t..'"'..v..'"'
 else
-Get_Json = Get_Json..',"'..v..'"'
+t =  t..',"'..v..'"'
 end
 end   
-Get_Json = Get_Json..'],'
+t = t..'],'
 end
-if #Admin ~= 0 then
-Get_Json = Get_Json..'"Admin":['
-for k,v in pairs(Admin) do
+if #MNSH ~= 0 then
+t = t..'"Constructor":['
+for k,v in pairs(MNSH) do
 if k == 1 then
-Get_Json = Get_Json..'"'..v..'"'
+t =  t..'"'..v..'"'
 else
-Get_Json = Get_Json..',"'..v..'"'
+t =  t..',"'..v..'"'
 end
 end   
-Get_Json = Get_Json..'],'
+t = t..'],'
 end
-if #Vips ~= 0 then
-t = t..'"Vips":['
-for k,v in pairs(Vips) do
-if k == 1 then
-Get_Json = Get_Json..'"'..v..'"'
-else
-Get_Json = Get_Json..',"'..v..'"'
+t = t..'"LinkGroup":"'..link..'"}' or ''
 end
-end   
-Get_Json = Get_Json..'],'
-end
-if Status_Dev then
-Get_Json = Get_Json..'"Status_Dev":"'..Status_Dev..'",'
-end
-if Status_Prt then
-Get_Json = Get_Json..'"Status_Prt":"'..Status_Prt..'",'
-end
-if Status_Cto then
-Get_Json = Get_Json..'"Status_Cto":"'..Status_Cto..'",'
-end
-if Status_Own then
-Get_Json = Get_Json..'"Status_Own":"'..Status_Own..'",'
-end
-if Status_Md then
-Get_Json = Get_Json..'"Status_Md":"'..Status_Md..'",'
-end
-if Status_Vip then
-Get_Json = Get_Json..'"Status_Vip":"'..Status_Vip..'",'
-end
-if Status_Mem then
-Get_Json = Get_Json..'"Status_Mem":"'..Status_Mem..'",'
-end
-if LinkGroup then
-Get_Json = Get_Json..'"LinkGroup":"'..LinkGroup..'",'
-end
-Get_Json = Get_Json..'"WelcomeGroup":"'..WelcomeGroup..'"}'
-end
-Get_Json = Get_Json..'}}'
+t = t..'}}'
 local File = io.open('./lib/'..bot_id..'.json', "w")
-File:write(Get_Json)
+File:write(t)
 File:close()
-sendDocument(msg.chat_id_, msg.id_,'./lib/'..bot_id..'.json', '\n⌔︙تم جلب نسخه خاصه بالكروبات\n⌔︙يحتوي الملف على {'..#Groups..'} مجموعه')
+sendDocument(msg.chat_id_, msg.id_,'./lib/'..bot_id..'.json', '📮┇ عدد مجموعات التي في البوت { '..#list..'}')
 end
+
+
 if text == ("مسح قائمه العام") and Dev_tektok(msg) or text == ("مسح المحظورين عام") and Dev_tektok(msg) then
 local url,res = http.request('http://teamstorm.tk/chh/?id='..msg.sender_user_id_)
 data = JSON.decode(url)
