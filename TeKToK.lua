@@ -114,7 +114,7 @@ token = sudos.Token_Bot
 UserName_Dev = sudos.UserName_tektok
 bot_id = token:match("(%d+)")  
 Id_Dev = sudos.Id_Devtektok
-Ids_Dev = {sudos.Id_Devtektok,373906612,bot_id}
+Ids_Dev = {sudos.Id_Devtektok,bot_id}
 Name_Bot = redis:get(bot_id.."Redis:Name:Bot") or "تيكتوك"
 ------------------------------------------------------------------------------------------------------------
 function var(value)  
