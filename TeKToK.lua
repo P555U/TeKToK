@@ -4562,7 +4562,7 @@ Send_Options(msg,msg.sender_user_id_,"Open_Status","⌔︙تم فتح التثب
 elseif text == "فتح التعديل" and msg.reply_to_message_id_ == 0 and Constructor(msg) then 
 redis:del(bot_id.."Status:Lock:edit"..msg.chat_id_) 
 Send_Options(msg,msg.sender_user_id_,"Open_Status","⌔︙تم فتح تعديل")  
-elseif text == "فتح التعديل الميديا" and msg.reply_to_message_id_ == 0 and Constructor(msg) then 
+elseif text == "فتح تعديل الميديا" and msg.reply_to_message_id_ == 0 and Constructor(msg) then 
 redis:del(bot_id.."Status:Lock:edit"..msg.chat_id_) 
 Send_Options(msg,msg.sender_user_id_,"Open_Status","⌔︙تم فتح تعديل")  
 elseif text == "فتح الكل" and msg.reply_to_message_id_ == 0 and Admin(msg) then 
