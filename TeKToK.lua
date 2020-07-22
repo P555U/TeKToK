@@ -7231,7 +7231,7 @@ elseif data.ID == ("UpdateMessageEdited") then
 tdcli_function ({ID = "GetMessage",chat_id_ = data.chat_id_,message_id_ = tonumber(data.message_id_)},function(extra, result, success)
 local textedit = result.content_.text_
 redis:incr(bot_id..'Num:Message:Edit'..result.chat_id_..result.sender_user_id_)
-if redis:get(bot_id.."Status:Lock:edit"..msg.chat_id_) and not textedit and not PresidentGroup(result) then
+if redis:get(bot_id.."Status:Lock:edit"..result.chat_id_) and not textedit and not PresidentGroup(result) then
 Delete_Message(result.chat_id_,{[0] = data.message_id_}) 
 local list = redis:smembers(bot_id.."President:Group"..result.chat_id_)
 if #list == 0 then
