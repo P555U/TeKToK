@@ -1679,6 +1679,7 @@ return false
 end 
 redis:del(bot_id.."Change:Name:Bot"..msg.sender_user_id_) 
 redis:set(bot_id.."Redis:Name:Bot",text) 
+Name_Bot = text
 send(msg.chat_id_, msg.id_, "⌔︙ تم تغير اسم البوت الى - "..text)  
 return false
 end 
