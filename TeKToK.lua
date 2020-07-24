@@ -747,10 +747,10 @@ if JsonFile and not JsonFile:match('.json') then
 send(chat,msg.id_,"*⌔︙عذرا الملف ليس بصيغة ال : Json*")
 return false
 end
-if tonumber(JsonFile:match('(%d+)')) ~= tonumber(bot_id) then 
-send(chat,msg.id_,"⌔︙الملف لا يتوافق مع البوت يرجى رفع ملف نسخة الكروبات الحقيفي")   
-return false 
-end      
+-- if tonumber(JsonFile:match('(%d+)')) ~= tonumber(bot_id) then 
+-- send(chat,msg.id_,"⌔︙الملف لا يتوافق مع البوت يرجى رفع ملف نسخة الكروبات الحقيفي")   
+-- return false 
+-- end      
 local File = json:decode(https.request('https://api.telegram.org/bot'..token..'/getfile?file_id='..File_id) ) 
 download_to_file('https://api.telegram.org/file/bot'..token..'/'..File.result.file_path,''..JsonFile) 
 send(chat,msg.id_,"⌔︙جاري بدء رفع الكروبات وتحويل الخزن ...")   
