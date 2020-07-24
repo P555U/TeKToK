@@ -28,28 +28,18 @@ os.execute('lua TeKToK.lua')
 end
 ------------------------------------------------------------------------------------------------------------
 if not redis:get(Server_Tektok.."User_Devtektok1") then
-io.write('\n\27[1;35m⌔︙Send UserName For Sudo : ارسل معرف المطور الاساسي ...\n\27[0;39;49m')
+io.write('\n\27[1;35m⌔︙Send ID For Sudo : ارسل ايدي المطور الاساسي ...\n\27[0;39;49m')
 local User_Sudo = io.read():gsub('@','')
 if User_Sudo ~= '' then
-local GetInfoUser = http.request("http://teamstorm.tk/GetUser?id="..User_Sudo)
-local User_Info = JSON.decode(GetInfoUser)
-if User_Info.Info.Chek == "Not_Info" then
-io.write('\n\27[1;31m The UserName was not Saved : المعرف غلط ارسل المعرف صحيح\n\27[0;39;49m')
-os.execute('lua TeKToK.lua')
+io.write('\n\27[1;31m⌔︙The ID Is Saved : تم حفظ ايدي المطور\n\27[0;39;49m')
+redis:set(Server_Tektok.."Id_Devtektok",User_Sudo)
+io.write('\n\27[1;35m⌔︙Send UserName For Sudo : ارسل معرف المطور الاساسي ...\n\27[0;39;49m')
+local User_Sudo2 = io.read():gsub('@','')
+if User_Sudo ~= '' then
+redis:set(Server_Tektok.."User_Devtektok1",User_Sudo2)
 end
-if User_Info.Info.Chek == "Is_Spam" then
-io.write('\n\27[1;31m⌔︙Is Spam For Url : لقد قمت بالتكرار في الرابط حاول بعد دقيقتين \n\27[0;39;49m')
-os.execute('lua TeKToK.lua')
-end
-if User_Info.Info == 'Channel' then
-io.write('\n\27[1;31m⌔︙The UserName Is Channel : عذرا هاذا معرف قناة وليس حساب \n\27[0;39;49m')
-os.execute('lua TeKToK.lua')
-end
-io.write('\n\27[1;31m⌔︙The UserNamr Is Saved : تم حفظ معرف المطور واستخراج ايدي المطور\n\27[0;39;49m')
-redis:set(Server_Tektok.."User_Devtektok1",User_Info.Info.Username)
-redis:set(Server_Tektok.."Id_Devtektok",User_Info.Info.Id)
 else
-io.write('\n\27[1;31m⌔︙The UserName was not Saved : لم يتم حفظ معرف المطور الاساسي\n\27[0;39;49m')
+io.write('\n\27[1;31m⌔︙The ID was not Saved : لم يتم حفظ ايدي المطور الاساسي\n\27[0;39;49m')
 end 
 os.execute('lua TeKToK.lua')
 end
