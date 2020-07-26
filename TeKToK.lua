@@ -6059,11 +6059,14 @@ if Msg_Num > 1000 then
 send(msg.chat_id_, msg.id_,'⌔︙تستطيع حذف *(1000)* رساله فقط') 
 return false  
 end  
+lk_keko = {[0]=msg.id_}
 local Message = msg.id_
+new = 0
 for i=1,tonumber(Msg_Num) do
-Delete_Message(msg.chat_id_,{[0]=Message})
 Message = Message - 1048576
+lk_keko{i} = Message
 end
+Delete_Message(msg.chat_id_,lk_keko)
 send(msg.chat_id_, msg.id_,'⌔︙تم ازالة *- '..Msg_Num..'* رساله من المجموعه')  
 elseif text == 'ايدي' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id..'Status:Lock:Id:Photo'..msg.chat_id_) then
 function Function_Status(extra, result, success)
@@ -7108,6 +7111,7 @@ if (data.message_.content_.text_) then
         ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] = data.message_.content_.text_
         ban_Keko["ban2:"..msg.chat_id_..msg.sender_user_id_] = true
     end 
+    
 end 
 if msg.date_ and msg.date_ < tonumber(os.time() - 30) then
 print("->> Old Message End <<-")
