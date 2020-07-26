@@ -7084,6 +7084,7 @@ end
 end
 end
 ------------------------------------------------------------------------------------------------------------
+local ban_Keko = {}
 function tdcli_update_callback(data)
 if data.ID == ("UpdateChannel") then 
 if data.channel_.status_.ID == ("ChatMemberStatusKicked") then 
@@ -7092,6 +7093,17 @@ end
 elseif data.ID == ("UpdateNewMessage") then
 msg = data.message_
 text = msg.content_.text_
+if (data.message_.content_.text_) then 
+    if (ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] == data.message_.content_.text_ and ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] >= 3) then 
+        return false
+    elseif(ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] == data.message_.content_.text_ and ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_]) then 
+        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] + 1;
+    elseif(ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] == data.message_.content_.text_) then 
+        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = 1;
+    else 
+        ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] = data.message_.content_.text_
+    end 
+end 
 if msg.date_ and msg.date_ < tonumber(os.time() - 30) then
 print("->> Old Message End <<-")
 return false
