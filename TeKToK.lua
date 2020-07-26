@@ -7095,6 +7095,10 @@ msg = data.message_
 text = msg.content_.text_
 if (data.message_.content_.text_) then 
     if (ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] == data.message_.content_.text_ and ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] >= 3) then 
+        if (ban_Keko["ban2:"..msg.chat_id_..msg.sender_user_id_]) then 
+            ban_Keko["ban2:"..msg.chat_id_..msg.sender_user_id_] = nil
+            send(msg.chat_id_, msg.id_,"⌔︙لتلح يا حلو 😉")  
+        end 
         return false
     elseif(ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] == data.message_.content_.text_ and ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_]) then 
         ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] + 1;
@@ -7102,6 +7106,7 @@ if (data.message_.content_.text_) then
         ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = 1;
     else 
         ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] = data.message_.content_.text_
+        ban_Keko["ban2:"..msg.chat_id_..msg.sender_user_id_] = true
     end 
 end 
 if msg.date_ and msg.date_ < tonumber(os.time() - 30) then
