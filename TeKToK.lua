@@ -7149,6 +7149,7 @@ if (data.message_.content_.text_) then
     else 
         ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] = data.message_.content_.text_
         ban_Keko["ban2:"..msg.chat_id_..msg.sender_user_id_] = true
+        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = 1;
     end 
     
 end 
