@@ -6053,6 +6053,7 @@ end
 end,nil)   
 end,nil)   
 end
+
 if text and text:match('^تنظيف (%d+)$') and Admin(msg) or text and text:match('^حذف (%d+)$') and Admin(msg) or text and text:match('^مسح (%d+)$') and Admin(msg) then    
 local Msg_Num = tonumber(text:match('^تنظيف (%d+)$')) or tonumber(text:match('^حذف (%d+)$'))  or tonumber(text:match('^مسح (%d+)$')) 
 if Msg_Num > 1000 then 
@@ -6068,6 +6069,23 @@ lk_keko{i} = Message
 end
 Delete_Message(msg.chat_id_,lk_keko)
 send(msg.chat_id_, msg.id_,'⌔︙تم ازالة *- '..Msg_Num..'* رساله من المجموعه')  
+elseif text and text == "تنظيف جميع الميديا" and Admin(msg) then   
+
+lk_keko = {[0]=msg.id_}
+local Message = msg.id_
+new = 0
+for i=1,10 do
+Message = Message - 1048576
+lk_keko{i} = Message
+end
+tdcli_function ({ID = "GetMessages",chat_id_ = msg.chat_id_,message_ids_ = lk_keko},function(arg,data)
+    for i=0 ,data.total_count_ do
+        if data.messages_[i] then
+            send(msg.chat_id_, msg.id_,"*"..JSON.encode(data.messages_[i]).."*")  
+        end
+    end
+end,nil)  
+-- send(msg.chat_id_, msg.id_,'⌔︙تم ازالة *- '..Msg_Num..'* رساله من المجموعه')  
 elseif text == 'ايدي' and tonumber(msg.reply_to_message_id_) > 0 and not redis:get(bot_id..'Status:Lock:Id:Photo'..msg.chat_id_) then
 function Function_Status(extra, result, success)
 tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
