@@ -6427,7 +6427,7 @@ send(msg.chat_id_, msg.id_,[[
 𓂅 . [TeKToK iNDT](t.me/TekTok0)     
  
  ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ 
-𓂅 . [TWS TeKToK](t.me/Ub55bot)     
+𓂅 . [TWS TeKToK](t.me/ubuuuBoT)     
 ]]) 
 elseif text == 'الاوامر' and Admin(msg) then
 send(msg.chat_id_, msg.id_,[[*
