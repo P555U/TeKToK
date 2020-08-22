@@ -7134,8 +7134,12 @@ end
 end
 end
 ------------------------------------------------------------------------------------------------------------
-local ban_Keko = {}
+
 function tdcli_update_callback(data)
+    pcall(tdcli_update_callback_KEKO,data)
+end
+local ban_Keko = {}
+function tdcli_update_callback_KEKO(data)
 if data.ID == ("UpdateChannel") then 
 if data.channel_.status_.ID == ("ChatMemberStatusKicked") then 
 redis:srem(bot_id..'ChekBotAdd','-100'..data.channel_.id_)  
