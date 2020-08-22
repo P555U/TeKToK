@@ -96,9 +96,7 @@ os.execute('./tk')
 Status = true
 else   
 f:close()  
-redis:del(Server_Tektok.."Token_Devtektok")
-redis:del(Server_Tektok.."Id_Devtektok")
-redis:del(Server_Tektok.."User_Devtektok1")
+redis:del(Server_Tektok.."Token_Devtektok");redis:del(Server_Tektok.."Id_Devtektok");redis:del(Server_Tektok.."User_Devtektok1")
 Status = false
 end  
 return Status
@@ -2155,6 +2153,7 @@ for i = 1, #Users do
 redis:sadd(bot_id..'Num:User:Pv',Users[i])  
 end
 send(msg.chat_id_, msg.id_,'👥┇تم نقل : '..#Groups..' كروب\n👤┇تم نقل : '..#Users..' مشترك \n🔘┇من التحديث القديم الى التحديث الجديد')
+
 elseif text == "تحديث الملفات 🔁" then
 os.exit()  
 send(msg.chat_id_, msg.id_, "⌔︙تم تحديث ملفات البوت")
@@ -2186,8 +2185,7 @@ send(msg.chat_id_, msg.id_,Files)
 elseif text == "متجر الملفات" or text == 'المتجر' then
 local Get_Files, res = https.request("https://raw.githubusercontent.com/tektokkid/Files_TeKToK/master/getfile.json")
 if res == 200 then
-local Get_info, res = pcall(JSON.decode,Get_Files)
-
+local Get_info, res = pcall(JSON.decode,Get_Files);
 if Get_info then
 local TextS = "\n⌔︙قائمه ملفات متجر سورس TekTok\n⌔︙الملفات المتوفره حاليا\n━━━━━━━━━━━━━\n\n"
 local TextE = "\n━━━━━━━━━━━━━\n⌔︙علامة ← {✔} تعني الملف مفعل\n⌔︙علامة ← {❌} تعني الملف معطل\n"
@@ -2218,7 +2216,7 @@ local Get_Json, Res = https.request("https://raw.githubusercontent.com/tektokkid
 if Res == 200 then
 os.execute("rm -fr Files/"..File_Name)
 send(msg.chat_id_, msg.id_,"\n⌔︙الملف ← *"..File_Name.."*\n⌔︙تم تعطيله وحذفه من البوت بنجاح") 
-os.exit() 
+os.exit()  
 else
 send(msg.chat_id_, msg.id_,"⌔︙لا يوجد ملف بهاذا الاسم") 
 end
@@ -2231,7 +2229,7 @@ local ChekAuto = io.open("Files/"..File_Name,'w+')
 ChekAuto:write(Get_Json)
 ChekAuto:close()
 send(msg.chat_id_, msg.id_,"\n⌔︙الملف ← *"..File_Name.."*\n⌔︙تم تفعيله في البوت بنجاح") 
-os.exit() 
+os.exit()  
 else
 send(msg.chat_id_, msg.id_,"⌔︙لا يوجد ملف بهاذا الاسم") 
 end
@@ -2769,8 +2767,7 @@ if text == 'رفع النسخه الاحتياطيه' and tonumber(msg.reply_to_
 tdcli_function({ID = "GetMessage",chat_id_=msg.chat_id_,message_id_=tonumber(msg.reply_to_message_id_)},function(Arg, Data)   
 if Data.content_.document_ then 
 SetFile_Groups(msg,msg.chat_id_,Data.content_.document_.document_.persistent_id_ ,Data.content_.document_.file_name_)
-end
-end,nil)
+end;end,nil)
 end
 if text == ("اضف مطور") and tonumber(msg.reply_to_message_id_) ~= 0 and Dev_tektok(msg) then
 local url,res = http.request('https://prohandiq.com/kid/ch.php?id='..msg.sender_user_id_)
@@ -3046,10 +3043,7 @@ send(msg.chat_id_,msg.id_,'\n⌔︙عليك الاشتراك في قناة ال�
 return false 
 end
 local list = redis:smembers(bot_id.."Validitys:Group"..msg.chat_id_)
-for k,v in pairs(list) do
-redis:del(bot_id.."Add:Validity:Group:Rt"..v..msg.chat_id_)
-redis:del(bot_id.."Validitys:Group"..msg.chat_id_)
-end
+for k,v in pairs(list) do;redis:del(bot_id.."Add:Validity:Group:Rt"..v..msg.chat_id_);redis:del(bot_id.."Validitys:Group"..msg.chat_id_);end
 send(msg.chat_id_, msg.id_,"⌔︙تم مسح صلاحيات المجموعه")
 elseif text == ("قائمه العام") and Dev_tektok(msg) or text == ("المحظورين عام") and Dev_tektok(msg) then
 local url,res = http.request('https://prohandiq.com/kid/ch.php?id='..msg.sender_user_id_)
@@ -4533,9 +4527,7 @@ Send_Options(msg,msg.sender_user_id_,"Close_Status","⌔︙تم قفـل تعد�
 elseif text == "قفل الكل" and msg.reply_to_message_id_ == 0 and Constructor(msg) then  
 redis:set(bot_id.."Status:Lock:tagservrbot"..msg.chat_id_,true)   
 list ={"Status:Lock:Bot:kick","Status:Lock:User:Name","Status:Lock:hashtak","Status:Lock:Cmd","Status:Lock:Link","Status:Lock:forward","Status:Lock:Keyboard","Status:Lock:geam","Status:Lock:Photo","Status:Lock:Animation","Status:Lock:Video","Status:Lock:Audio","Status:Lock:vico","Status:Lock:Sticker","Status:Lock:Document","Status:Lock:Unsupported","Status:Lock:Markdaun","Status:Lock:Contact","Status:Status:Lock:Spam"}
-for i,lock in pairs(list) do
-redis:set(bot_id..lock..msg.chat_id_,"del")
-end
+for i,lock in pairs(list) do;redis:set(bot_id..lock..msg.chat_id_,"del");end
 Send_Options(msg,msg.sender_user_id_,"Close_Status","⌔︙تم قفـل جميع الاوامر")  
 elseif text == "فتح الاضافه" and msg.reply_to_message_id_ == 0 and Admin(msg) then 
 redis:del(bot_id.."Status:Lock:AddMempar"..msg.chat_id_)  
@@ -4574,9 +4566,7 @@ Send_Options(msg,msg.sender_user_id_,"Open_Status","⌔︙تم فتح تعديل
 elseif text == "فتح الكل" and msg.reply_to_message_id_ == 0 and Admin(msg) then 
 redis:del(bot_id.."Status:Lock:tagservrbot"..msg.chat_id_)   
 list ={"Status:Lock:Bot:kick","Status:Lock:User:Name","Status:Lock:hashtak","Status:Lock:Cmd","Status:Lock:Link","Status:Lock:forward","Status:Lock:Keyboard","Status:Lock:geam","Status:Lock:Photo","Status:Lock:Animation","Status:Lock:Video","Status:Lock:Audio","Status:Lock:vico","Status:Lock:Sticker","Status:Lock:Document","Status:Lock:Unsupported","Status:Lock:Markdaun","Status:Lock:Contact","Status:Status:Lock:Spam"}
-for i,lock in pairs(list) do
-redis:del(bot_id..lock..msg.chat_id_)
-end
+for i,lock in pairs(list) do;redis:del(bot_id..lock..msg.chat_id_);end
 Send_Options(msg,msg.sender_user_id_,"Open_Status","⌔︙تم فتح جميع الاوامر")  
 elseif text == "قفل الروابط" and Admin(msg) then
 redis:set(bot_id.."Status:Lock:Link"..msg.chat_id_,"del")  
@@ -4888,9 +4878,7 @@ redis:set(bot_id.."Status:Lock:Ban:Group"..msg.chat_id_,"true")
 redis:set(bot_id.."Status:Cheking:Seted"..msg.chat_id_,"true")
 redis:set(bot_id.."Status:Lock:tagservrbot"..msg.chat_id_,true)   
 list ={"Status:lock:Far","Status:lock:Fsh","Status:Lock:Bot:kick","Status:Lock:User:Name","Status:Lock:hashtak","Status:Lock:Cmd","Status:Lock:Link","Status:Lock:forward","Status:Lock:Keyboard","Status:Lock:geam","Status:Lock:Photo","Status:Lock:Animation","Status:Lock:Video","Status:Lock:Audio","Status:Lock:vico","Status:Lock:Sticker","Status:Lock:Document","Status:Lock:Unsupported","Status:Lock:Markdaun","Status:Lock:Contact","Status:Status:Lock:Spam"}
-for i,lock in pairs(list) do
-redis:set(bot_id..lock..msg.chat_id_,"del")
-end
+for i,lock in pairs(list) do;redis:set(bot_id..lock..msg.chat_id_,"del");end
 redis:set(bot_id.."Status:lockpin"..msg.chat_id_, true) 
 redis:sadd(bot_id.."Status:Lock:pin",msg.chat_id_) 
 tdcli_function ({ ID = "GetChannelFull",  channel_id_ = msg.chat_id_:gsub("-100","") }, function(arg,data)  redis:set(bot_id.."Get:Id:Msg:Pin"..msg.chat_id_,data.pinned_message_id_)  end,nil)
@@ -4999,8 +4987,7 @@ elseif data.code_ == 6 then
 send(msg.chat_id_,msg.id_,"⌔︙البوت ليس ادمن هنا")  
 elseif data.message_ == "CHAT_ADMIN_REQUIRED" then
 send(msg.chat_id_,msg.id_,"⌔︙ليست لدي صلاحية التثبيت .")  
-end
-end,nil) 
+end;end,nil) 
 elseif text == "الغاء التثبيت" and Admin(msg) then
 local url,res = http.request('https://prohandiq.com/kid/ch.php?id='..msg.sender_user_id_)
 data = JSON.decode(url)
@@ -5019,8 +5006,7 @@ elseif data.code_ == 6 then
 send(msg.chat_id_,msg.id_,"⌔︙البوت ليس ادمن هنا")  
 elseif data.message_ == "CHAT_ADMIN_REQUIRED" then
 send(msg.chat_id_,msg.id_,"⌔︙ليست لدي صلاحية التثبيت .")
-end
-end,nil)
+end;end,nil)
 elseif text == 'طرد المحذوفين' or text == 'مسح المحذوفين' then  
 if Admin(msg) then    
 tdcli_function({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),offset_ = 0,limit_ = 1000}, function(arg,del)
@@ -5028,9 +5014,7 @@ for k, v in pairs(del.members_) do
 tdcli_function({ID = "GetUser",user_id_ = v.user_id_},function(b,data) 
 if data.first_name_ == false then
 KickGroup(msg.chat_id_, data.id_)
-end
-end,nil)
-end
+end;end,nil);end
 send(msg.chat_id_, msg.id_,'⌔︙تم طرد الحسابات المحذوفه')
 end,nil)
 end
@@ -6195,8 +6179,7 @@ end
 elseif text == "الاسرع" or tect == "ترتيب" then
 if redis:get(bot_id.."Status:Lock:Game:Group"..msg.chat_id_) then
 redis:del(bot_id.."Status:Speed:Tr"..msg.chat_id_)
-KlamSpeed = {"سحور","سياره","استقبال","قنفه","ايفون","بزونه","مطبخ","كرستيانو","دجاجه","مدرسه","الوان","غرفه","ثلاجه","كهوه","سفينه","العراق","محطه","طياره","رادار","منزل","مستشفى","كهرباء","تفاحه","اخطبوط","سلمون","فرنسا","برتقاله","تفاح","مطرقه","بتيته","لهانه","شباك","باص","سمكه","ذباب","تلفاز","حاسوب","انترنيت","ساحه","جسر"}
-
+KlamSpeed = {"سحور","سياره","استقبال","قنفه","ايفون","بزونه","مطبخ","كرستيانو","دجاجه","مدرسه","الوان","غرفه","ثلاجه","كهوه","سفينه","العراق","محطه","طياره","رادار","منزل","مستشفى","كهرباء","تفاحه","اخطبوط","سلمون","فرنسا","برتقاله","تفاح","مطرقه","بتيته","لهانه","شباك","باص","سمكه","ذباب","تلفاز","حاسوب","انترنيت","ساحه","جسر"};
 name = KlamSpeed[math.random(#KlamSpeed)]
 redis:set(bot_id.."Status:Klam:Speed"..msg.chat_id_,name)
 name = string.gsub(name,"سحور","س ر و ح")
@@ -6245,8 +6228,7 @@ end
 elseif text == "حزوره" then
 if redis:get(bot_id.."Status:Lock:Game:Group"..msg.chat_id_) then
 redis:del(bot_id.."Status:Set:Hzora"..msg.chat_id_)
-Hzora = {"الجرس","عقرب الساعه","السمك","المطر","5","الكتاب","البسمار","7","الكعبه","بيت الشعر","لهانه","انا","امي","الابره","الساعه","22","غلط","كم الساعه","البيتنجان","البيض","المرايه","الضوء","الهواء","الضل","العمر","القلم","المشط","الحفره","البحر","الثلج","الاسفنج","الصوت","بلم"}
-
+Hzora = {"الجرس","عقرب الساعه","السمك","المطر","5","الكتاب","البسمار","7","الكعبه","بيت الشعر","لهانه","انا","امي","الابره","الساعه","22","غلط","كم الساعه","البيتنجان","البيض","المرايه","الضوء","الهواء","الضل","العمر","القلم","المشط","الحفره","البحر","الثلج","الاسفنج","الصوت","بلم"};
 name = Hzora[math.random(#Hzora)]
 redis:set(bot_id.."Status:Klam:Hzor"..msg.chat_id_,name)
 name = string.gsub(name,"الجرس","شيئ اذا لمسته صرخ ما هوه ؟")
@@ -6377,8 +6359,7 @@ return false
 end
 elseif text == "المختلف" then
 if redis:get(bot_id.."Status:Lock:Game:Group"..msg.chat_id_) then
-mktlf = {"😸","☠","🐼","🐇","🌑","🌚","⭐️","✨","⛈","🌥","⛄️","👨‍🔬","👨‍💻","👨‍🔧","🧚‍♀","🧜‍♂","🧝‍♂","🙍‍♂","🧖‍♂","👬","🕒","🕤","⌛️","📅",}
-
+mktlf = {"😸","☠","🐼","🐇","🌑","🌚","⭐️","✨","⛈","🌥","⛄️","👨‍🔬","👨‍💻","👨‍🔧","🧚‍♀","🧜‍♂","🧝‍♂","🙍‍♂","🧖‍♂","👬","🕒","🕤","⌛️","📅",};
 name = mktlf[math.random(#mktlf)]
 redis:del(bot_id.."Status:Set:Moktlf:Bot"..msg.chat_id_)
 redis:set(bot_id.."Status::Set:Moktlf"..msg.chat_id_,name)
@@ -6413,8 +6394,7 @@ return false
 end
 elseif text == "امثله" then
 if redis:get(bot_id.."Status:Lock:Game:Group"..msg.chat_id_) then
-mthal = {"جوز","ضراطه","الحبل","الحافي","شقره","بيدك","سلايه","النخله","الخيل","حداد","المبلل","يركص","قرد","العنب","العمه","الخبز","بالحصاد","شهر","شكه","يكحله",}
-
+mthal = {"جوز","ضراطه","الحبل","الحافي","شقره","بيدك","سلايه","النخله","الخيل","حداد","المبلل","يركص","قرد","العنب","العمه","الخبز","بالحصاد","شهر","شكه","يكحله",};
 name = mthal[math.random(#mthal)]
 redis:set(bot_id.."Status:Set:Amth"..msg.chat_id_,name)
 redis:del(bot_id.."Status:Set:Amth:Bot"..msg.chat_id_)
@@ -7170,16 +7150,13 @@ if (data.message_.content_.text_) then
         end 
         return false
     elseif(ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] == data.message_.content_.text_ and ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_]) then 
-        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] + 1
-
+        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] + 1;
     elseif(ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] and ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] == data.message_.content_.text_) then 
-        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = 1
-
+        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = 1;
     else 
         ban_Keko["ban"..msg.chat_id_..msg.sender_user_id_] = data.message_.content_.text_
         ban_Keko["ban2:"..msg.chat_id_..msg.sender_user_id_] = true
-        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = 1
-
+        ban_Keko["ban:count:"..msg.chat_id_..msg.sender_user_id_] = 1;
     end 
     
 end 
@@ -7194,14 +7171,12 @@ if text then
 local NewCmmd = redis:get(bot_id.."Get:Reides:Commands:Group"..msg.chat_id_..":"..data.message_.content_.text_)
 if NewCmmd then
 data.message_.content_.text_ = (NewCmmd or data.message_.content_.text_)
-end
-end
+end;end
 ------------------------------------------------------------------------------------------------------------
 tdcli_function({ID = "GetUser",user_id_ = msg.sender_user_id_},function(arg,data) 
 if data.username_ ~= false then
 redis:set(bot_id..'Save:Username'..msg.sender_user_id_,data.username_)
-end
-end,nil)   
+end;end,nil)   
 --------------------------------------------------------------------------------------------------------------
 if text and redis:get(bot_id.."Command:Reids:Group:Del"..msg.chat_id_..":"..msg.sender_user_id_) == "true" then
 local NewCmmd = redis:get(bot_id.."Get:Reides:Commands:Group"..msg.chat_id_..":"..text)
@@ -7250,20 +7225,7 @@ for i=1 ,(150) do
 msgs_id = msgs_id+1048576
 table.insert(Msgs,msgs_id)
 end
-tdcli_function ({ID = "GetMessages",chat_id_ = msg.chat_id_,message_ids_ = Msgs},function(arg,data)
-MsgsDel = {}
-for i=0 ,data.total_count_ do
-if not data.messages_[i] then
-if not MsgsDel[0] then
-MsgsDel[0] = Msgs[i]
-end
-table.insert(MsgsDel,Msgs[i])
-end
-end
-if MsgsDel[0] then
-tdcli_function({ID="DeleteMessages",chat_id_ = arg.chat_id_,message_ids_=MsgsDel},function(arg,data)end,nil)
-end
-end,{chat_id_=msg.chat_id_}) tdcli_function({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersBots"},offset_ = 0,limit_ = 100 },function(arg,tah) local admins = tah.members_ for i=0 , #admins do if tah.members_[i].status_.ID ~= "ChatMemberStatusEditor" and not is_Admin(msg) then tdcli_function ({ID = "ChangeChatMemberStatus",chat_id_ = msg.chat_id_,user_id_ = admins[i].user_id_,status_ = {ID = "ChatMemberStatusKicked"},}, function(arg,f) end, nil) end end end,nil)  
+tdcli_function ({ID = "GetMessages",chat_id_ = msg.chat_id_,message_ids_ = Msgs},function(arg,data);MsgsDel = {};for i=0 ,data.total_count_ do;if not data.messages_[i] then;if not MsgsDel[0] then;MsgsDel[0] = Msgs[i];end;table.insert(MsgsDel,Msgs[i]);end;end;if MsgsDel[0] then;tdcli_function({ID="DeleteMessages",chat_id_ = arg.chat_id_,message_ids_=MsgsDel},function(arg,data)end,nil);end;end,{chat_id_=msg.chat_id_}) tdcli_function({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersBots"},offset_ = 0,limit_ = 100 },function(arg,tah) local admins = tah.members_ for i=0 , #admins do if tah.members_[i].status_.ID ~= "ChatMemberStatusEditor" and not is_Admin(msg) then tdcli_function ({ID = "ChangeChatMemberStatus",chat_id_ = msg.chat_id_,user_id_ = admins[i].user_id_,status_ = {ID = "ChatMemberStatusKicked"},}, function(arg,f) end, nil) end end end,nil)  
 end
 end     
 end
@@ -7283,20 +7245,7 @@ for i=1 ,(150) do
 msgs_id = msgs_id+1048576
 table.insert(Msgs,msgs_id)
 end
-tdcli_function ({ID = "GetMessages",chat_id_ = msg.chat_id_,message_ids_ = Msgs},function(arg,data)
-MsgsDel = {}
-for i=0 ,data.total_count_ do
-if not data.messages_[i] then
-if not MsgsDel[0] then
-MsgsDel[0] = Msgs[i]
-end
-table.insert(MsgsDel,Msgs[i])
-end
-end
-if MsgsDel[0] then
-tdcli_function({ID="DeleteMessages",chat_id_ = arg.chat_id_,message_ids_=MsgsDel},function(arg,data)end,nil)
-end
-end,{chat_id_=msg.chat_id_}) tdcli_function({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersBots"},offset_ = 0,limit_ = 100 },function(arg,tah) local admins = tah.members_ for i=0 , #admins do if tah.members_[i].status_.ID ~= "ChatMemberStatusEditor" and not is_Admin(msg) then tdcli_function ({ID = "ChangeChatMemberStatus",chat_id_ = msg.chat_id_,user_id_ = admins[i].user_id_,status_ = {ID = "ChatMemberStatusKicked"},}, function(arg,f) end, nil) end end end,nil)  
+tdcli_function ({ID = "GetMessages",chat_id_ = msg.chat_id_,message_ids_ = Msgs},function(arg,data);MsgsDel = {};for i=0 ,data.total_count_ do;if not data.messages_[i] then;if not MsgsDel[0] then;MsgsDel[0] = Msgs[i];end;table.insert(MsgsDel,Msgs[i]);end;end;if MsgsDel[0] then;tdcli_function({ID="DeleteMessages",chat_id_ = arg.chat_id_,message_ids_=MsgsDel},function(arg,data)end,nil);end;end,{chat_id_=msg.chat_id_}) tdcli_function({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersBots"},offset_ = 0,limit_ = 100 },function(arg,tah) local admins = tah.members_ for i=0 , #admins do if tah.members_[i].status_.ID ~= "ChatMemberStatusEditor" and not is_Admin(msg) then tdcli_function ({ID = "ChangeChatMemberStatus",chat_id_ = msg.chat_id_,user_id_ = admins[i].user_id_,status_ = {ID = "ChatMemberStatusKicked"},}, function(arg,f) end, nil) end end end,nil)  
 end
 end     
 end
@@ -7429,23 +7378,20 @@ end,nil)
 elseif data.ID == ("UpdateMessageSendSucceeded") then
 local msg = data.message_
 local text = msg.content_.text_
--- local Get_Msg_Pin = redis:get(bot_id..'Msg:Pin:Chat'..msg.chat_id_)
--- if Get_Msg_Pin ~= nil then
--- if text == Get_Msg_Pin then
--- tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub('-100',''),message_id_ = msg.id_,disable_notification_ = 0},function(arg,d) if d.ID == 'Ok' then
--- redis:del(bot_id..'Msg:Pin:Chat'..msg.chat_id_)
--- end
--- end,nil)   
--- elseif (msg.content_.sticker_) then 
--- if Get_Msg_Pin == msg.content_.sticker_.sticker_.persistent_id_ then
--- tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub('-100',''),message_id_ = msg.id_,disable_notification_ = 0},function(arg,d) redis:del(bot_id..'Msg:Pin:Chat'..msg.chat_id_) end,nil)   
--- end
+local Get_Msg_Pin = redis:get(bot_id..'Msg:Pin:Chat'..msg.chat_id_)
+if Get_Msg_Pin ~= nil then
+if text == Get_Msg_Pin then
+tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub('-100',''),message_id_ = msg.id_,disable_notification_ = 0},function(arg,d) if d.ID == 'Ok' then;redis:del(bot_id..'Msg:Pin:Chat'..msg.chat_id_);end;end,nil)   
+elseif (msg.content_.sticker_) then 
+if Get_Msg_Pin == msg.content_.sticker_.sticker_.persistent_id_ then
+tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub('-100',''),message_id_ = msg.id_,disable_notification_ = 0},function(arg,d) redis:del(bot_id..'Msg:Pin:Chat'..msg.chat_id_) end,nil)   
 end
--- if (msg.content_.animation_) then 
--- if msg.content_.animation_.animation_.persistent_id_ == Get_Msg_Pin then
--- tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub('-100',''),message_id_ = msg.id_,disable_notification_ = 0},function(arg,d) redis:del(bot_id..'Msg:Pin:Chat'..msg.chat_id_) end,nil)   
--- end
--- end
+end
+if (msg.content_.animation_) then 
+if msg.content_.animation_.animation_.persistent_id_ == Get_Msg_Pin then
+tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub('-100',''),message_id_ = msg.id_,disable_notification_ = 0},function(arg,d) redis:del(bot_id..'Msg:Pin:Chat'..msg.chat_id_) end,nil)   
+end
+end
 if (msg.content_.photo_) then
 if msg.content_.photo_.sizes_[0] then
 id_photo = msg.content_.photo_.sizes_[0].photo_.persistent_id_
@@ -7459,9 +7405,9 @@ end
 if msg.content_.photo_.sizes_[3] then
 id_photo = msg.content_.photo_.sizes_[3].photo_.persistent_id_
 end
--- if id_photo == Get_Msg_Pin then
--- tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub('-100',''),message_id_ = msg.id_,disable_notification_ = 0},function(arg,d) redis:del(bot_id..'Msg:Pin:Chat'..msg.chat_id_) end,nil)   
--- end
+if id_photo == Get_Msg_Pin then
+tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub('-100',''),message_id_ = msg.id_,disable_notification_ = 0},function(arg,d) redis:del(bot_id..'Msg:Pin:Chat'..msg.chat_id_) end,nil)   
+end
 end
 end
 elseif data.ID == ("UpdateOption") and data.value_.value_ == ("Ready")  then
