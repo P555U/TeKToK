@@ -5,7 +5,7 @@ json = dofile("./lib/JSON.lua")
 URL = dofile("./lib/url.lua")
 serpent = dofile("./lib/serpent.lua")
 redis = dofile("./lib/redis.lua").connect("127.0.0.1", 6379)
-Server_Tektok = io.popen("echo $PATH"):read('*a')
+Server_Tektok = "keko"
 ------------------------------------------------------------------------------------------------------------
 local function Load_File()
 local f = io.open("./Info_Sudo.lua", "r")  
@@ -84,9 +84,10 @@ keko:write([[
 #!/usr/bin/env bash
 cd $HOME/TeKToK
 screen -S Tektok -X kill
-screen -S Tektok ./TekTok
+screen -S Tektok ./tk
 ]])
 keko:close()
+
 io.popen("mkdir Files")
 os.execute('chmod +x tg')
 os.execute('chmod +x keko')
