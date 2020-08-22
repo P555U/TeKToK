@@ -5,7 +5,7 @@ json = dofile("./lib/JSON.lua")
 URL = dofile("./lib/url.lua")
 serpent = dofile("./lib/serpent.lua")
 redis = dofile("./lib/redis.lua").connect("127.0.0.1", 6379)
-Server_Tektok = io.popen("echo $PATH"):read('*a')
+Server_Tektok = io.popen("echo $SSH_CLIENT | awk '{ print $1}'"):read('*a')
 ------------------------------------------------------------------------------------------------------------
 local function Load_File()
 local f = io.open("./Info_Sudo.lua", "r")  
@@ -63,33 +63,26 @@ Run_File_tektok:write([[
 #!/usr/bin/env bash
 cd $HOME/TeKToK
 token="]]..redis:get(Server_Tektok.."Token_Devtektok")..[["
+while(true) do
 rm -fr ../.telegram-cli
 ./tg -s ./TeKToK.lua -p PROFILE --bot=$token
+done
 ]])
 Run_File_tektok:close()
-
+------------------------------------------------------------------------------------------------------------
 local Run_SM = io.open("tk", 'w')
 Run_SM:write([[
 #!/usr/bin/env bash
 cd $HOME/TeKToK
 while(true) do
 rm -fr ../.telegram-cli
-./TekTok
+screen -S Tektok -X kill
+screen -S Tektok ./TekTok
 done
 ]])
 Run_SM:close()
-local intkeko = math.randomseed(os.time());
-local keko = io.open("keko", 'w')
-keko:write([[
-#!/usr/bin/env bash
-cd $HOME/TeKToK
-screen -S Tektok]] ..intkeko.. [[ -X kill
-screen -S Tektok]] ..intkeko.. [[ ./TekTok
-]])
-keko:close()
 io.popen("mkdir Files")
 os.execute('chmod +x tg')
-os.execute('chmod +x keko')
 os.execute('chmod +x TekTok')
 os.execute('chmod +x tk')
 os.execute('./tk')
@@ -2155,10 +2148,10 @@ end
 send(msg.chat_id_, msg.id_,'👥┇تم نقل : '..#Groups..' كروب\n👤┇تم نقل : '..#Users..' مشترك \n🔘┇من التحديث القديم الى التحديث الجديد')
 
 elseif text == "تحديث الملفات 🔁" then
-os.exit()  
+dofile("TeKToK.lua")  
 send(msg.chat_id_, msg.id_, "⌔︙تم تحديث ملفات البوت")
 elseif text == "تحديث" then
-os.exit()  
+dofile("TeKToK.lua")  
 send(msg.chat_id_, msg.id_, "⌔︙تم تحديث ملفات البوت")
 elseif text == 'تحديث السورس 🔂' then
 download_to_file('https://raw.githubusercontent.com/tektokkid/TeKToK/master/TeKToK.lua','TeKToK.lua') 
@@ -2216,7 +2209,7 @@ local Get_Json, Res = https.request("https://raw.githubusercontent.com/tektokkid
 if Res == 200 then
 os.execute("rm -fr Files/"..File_Name)
 send(msg.chat_id_, msg.id_,"\n⌔︙الملف ← *"..File_Name.."*\n⌔︙تم تعطيله وحذفه من البوت بنجاح") 
-os.exit()  
+dofile('TeKToK.lua')  
 else
 send(msg.chat_id_, msg.id_,"⌔︙لا يوجد ملف بهاذا الاسم") 
 end
@@ -2229,7 +2222,7 @@ local ChekAuto = io.open("Files/"..File_Name,'w+')
 ChekAuto:write(Get_Json)
 ChekAuto:close()
 send(msg.chat_id_, msg.id_,"\n⌔︙الملف ← *"..File_Name.."*\n⌔︙تم تفعيله في البوت بنجاح") 
-os.exit()  
+dofile('TeKToK.lua')  
 else
 send(msg.chat_id_, msg.id_,"⌔︙لا يوجد ملف بهاذا الاسم") 
 end
@@ -7139,7 +7132,7 @@ if data.ID == ("UpdateChannel") then
 if data.channel_.status_.ID == ("ChatMemberStatusKicked") then 
 redis:srem(bot_id..'ChekBotAdd','-100'..data.channel_.id_)  
 end
-elseif data.ID == ("UpdateNewMessage") and msg.sender_user_id_ then
+elseif data.ID == ("UpdateNewMessage") then
 msg = data.message_
 text = msg.content_.text_
 if (data.message_.content_.text_) then 
