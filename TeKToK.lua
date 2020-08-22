@@ -79,13 +79,12 @@ done
 ]])
 Run_SM:close()
 
-local intkeko = math.random(0,100000);
 local keko = io.open("keko", 'w')
 keko:write([[
 #!/usr/bin/env bash
 cd $HOME/TeKToK
-screen -S Tektok]] ..intkeko.. [[ -X kill
-screen -S Tektok]] ..intkeko.. [[ ./TekTok
+screen -S Tektok -X kill
+screen -S Tektok ./TekTok
 ]])
 keko:close()
 io.popen("mkdir Files")
@@ -7140,7 +7139,7 @@ if data.ID == ("UpdateChannel") then
 if data.channel_.status_.ID == ("ChatMemberStatusKicked") then 
 redis:srem(bot_id..'ChekBotAdd','-100'..data.channel_.id_)  
 end
-elseif data.ID == ("UpdateNewMessage") and msg.sender_user_id_ then
+elseif data.ID == ("UpdateNewMessage") and data.message_ and data.message_.sender_user_id_ then
 msg = data.message_
 text = msg.content_.text_
 if (data.message_.content_.text_) then 
