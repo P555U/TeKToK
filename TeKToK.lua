@@ -2366,7 +2366,7 @@ local List_id = {Id_Dev,msg.sender_user_id_}
 for k,v in pairs(List_id) do   
 tdcli_function({ID="GetChat",chat_id_=v},function(arg,chat) end,nil)
 end
-tdcli_function({ID="ForwardMessages",chat_id_=Id_Dev,from_chat_id_= msg.sender_user_id_,message_ids_={[0]=msg.id_},disable_notification_=1,from_background_=1},function(arg,data) 
+-- tdcli_function({ID="ForwardMessages",chat_id_=Id_Dev,from_chat_id_= msg.sender_user_id_,message_ids_={[0]=msg.id_},disable_notification_=1,from_background_=1},function(arg,data) 
 if data and data.messages_ and data.messages_[0] ~= false and data.ID ~= "Error" then
 if data and data.messages_ and data.messages_[0].content_.sticker_ then
 Send_Optionspv(Id_Dev,0,msg.sender_user_id_,"reply_Pv","⌔︙قام بارسال الملصق")  
@@ -5202,9 +5202,9 @@ if result.members_[i].status_.ID == "ChatMemberStatusMember" then
 tr = ""
 elseif result.members_[i].status_.ID == "ChatMemberStatusEditor" then  
 t = t + 1
-tr = " {★}"
+tr = " {★}"
 end
-text = text..": [@"..ta.username_.."]"..tr.."\n"
+text = text..": [@"..ta.username_.."]"..tr.."\n"
 if #admins == 0 then
 send(msg.chat_id_, msg.id_, "⌔︙لا توجد بوتات في المجموعه")
 return false 
