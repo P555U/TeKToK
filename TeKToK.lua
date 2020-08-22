@@ -78,7 +78,8 @@ rm -fr ../.telegram-cli
 done
 ]])
 Run_SM:close()
-local intkeko = math.randomseed(os.time());
+
+local intkeko = math.random(0,100000);
 local keko = io.open("keko", 'w')
 keko:write([[
 #!/usr/bin/env bash
