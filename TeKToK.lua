@@ -11,59 +11,35 @@ local function Load_File()
 local f = io.open("./Info_Sudo.lua", "r")  
 if not f then   
 if not redis:get(Server_Tektok.."Token_Devtektok") then
-io.write('\n\27[1
-35m⌔︙Send Token For Bot : ارسل توكن البوت ...\n\27[0
-39
-49m')
+io.write('\n\27[1;35m⌔︙Send Token For Bot : ارسل توكن البوت ...\n\27[0;39;49m')
 local token = io.read()
 if token ~= '' then
 local url , res = https.request('https://api.telegram.org/bot'..token..'/getMe')
 if res ~= 200 then
-io.write('\n\27[1
-31m⌔︙Token Is Communication Error\n التوكن غلط جرب مره اخره \n\27[0
-39
-49m')
+io.write('\n\27[1;31m⌔︙Token Is Communication Error\n التوكن غلط جرب مره اخره \n\27[0;39;49m')
 else
-io.write('\n\27[1
-31m⌔︙Done Save Token : تم حفظ التوكن \n\27[0
-39
-49m')
+io.write('\n\27[1;31m⌔︙Done Save Token : تم حفظ التوكن \n\27[0;39;49m')
 redis:set(Server_Tektok.."Token_Devtektok",token)
 end 
 else
-io.write('\n\27[1
-31m⌔︙Token was not saved \n لم يتم حفظ التوكن \n\27[0
-39
-49m')
+io.write('\n\27[1;31m⌔︙Token was not saved \n لم يتم حفظ التوكن \n\27[0;39;49m')
 end 
 os.execute('lua TeKToK.lua')
 end
 ------------------------------------------------------------------------------------------------------------
 if not redis:get(Server_Tektok.."User_Devtektok1") then
-io.write('\n\27[1
-35m⌔︙Send ID For Sudo : ارسل ايدي المطور الاساسي ...\n\27[0
-39
-49m')
+io.write('\n\27[1;35m⌔︙Send ID For Sudo : ارسل ايدي المطور الاساسي ...\n\27[0;39;49m')
 local User_Sudo = io.read():gsub('@','')
 if User_Sudo ~= '' then
-io.write('\n\27[1
-31m⌔︙The ID Is Saved : تم حفظ ايدي المطور\n\27[0
-39
-49m')
+io.write('\n\27[1;31m⌔︙The ID Is Saved : تم حفظ ايدي المطور\n\27[0;39;49m')
 redis:set(Server_Tektok.."Id_Devtektok",User_Sudo)
-io.write('\n\27[1
-35m⌔︙Send UserName For Sudo : ارسل معرف المطور الاساسي ...\n\27[0
-39
-49m')
+io.write('\n\27[1;35m⌔︙Send UserName For Sudo : ارسل معرف المطور الاساسي ...\n\27[0;39;49m')
 local User_Sudo2 = io.read():gsub('@','')
 if User_Sudo ~= '' then
 redis:set(Server_Tektok.."User_Devtektok1",User_Sudo2)
 end
 else
-io.write('\n\27[1
-31m⌔︙The ID was not Saved : لم يتم حفظ ايدي المطور الاساسي\n\27[0
-39
-49m')
+io.write('\n\27[1;31m⌔︙The ID was not Saved : لم يتم حفظ ايدي المطور الاساسي\n\27[0;39;49m')
 end 
 os.execute('lua TeKToK.lua')
 end
