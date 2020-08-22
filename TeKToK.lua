@@ -5,7 +5,7 @@ json = dofile("./lib/JSON.lua")
 URL = dofile("./lib/url.lua")
 serpent = dofile("./lib/serpent.lua")
 redis = dofile("./lib/redis.lua").connect("127.0.0.1", 6379)
-Server_Tektok = io.popen("echo $SSH_CLIENT | awk '{ print $1}'"):read('*a')
+Server_Tektok = io.popen("echo $PATH"):read('*a')
 ------------------------------------------------------------------------------------------------------------
 local function Load_File()
 local f = io.open("./Info_Sudo.lua", "r")  
@@ -78,13 +78,13 @@ rm -fr ../.telegram-cli
 done
 ]])
 Run_SM:close()
-
+local intkeko = math.randomseed(os.time());
 local keko = io.open("keko", 'w')
 keko:write([[
 #!/usr/bin/env bash
 cd $HOME/TeKToK
-screen -S Tektok -X kill
-screen -S Tektok ./tk
+screen -S Tektok]] ..intkeko.. [[ -X kill
+screen -S Tektok]] ..intkeko.. [[ ./TekTok
 ]])
 keko:close()
 io.popen("mkdir Files")
@@ -92,8 +92,7 @@ os.execute('chmod +x tg')
 os.execute('chmod +x keko')
 os.execute('chmod +x TekTok')
 os.execute('chmod +x tk')
-os.execute('./keko')
-os.exit()
+os.execute('./tk')
 Status = true
 else   
 f:close()  
@@ -5202,9 +5201,9 @@ if result.members_[i].status_.ID == "ChatMemberStatusMember" then
 tr = ""
 elseif result.members_[i].status_.ID == "ChatMemberStatusEditor" then  
 t = t + 1
-tr = " {★}"
+tr = " {★}"
 end
-text = text..": [@"..ta.username_.."]"..tr.."\n"
+text = text..": [@"..ta.username_.."]"..tr.."\n"
 if #admins == 0 then
 send(msg.chat_id_, msg.id_, "⌔︙لا توجد بوتات في المجموعه")
 return false 
@@ -7134,17 +7133,13 @@ end
 end
 end
 ------------------------------------------------------------------------------------------------------------
-
-function tdcli_update_callback(data)
-    pcall(tdcli_update_callback_KEKO,data)
-end
 local ban_Keko = {}
-function tdcli_update_callback_KEKO(data)
+function tdcli_update_callback(data)
 if data.ID == ("UpdateChannel") then 
 if data.channel_.status_.ID == ("ChatMemberStatusKicked") then 
 redis:srem(bot_id..'ChekBotAdd','-100'..data.channel_.id_)  
 end
-elseif data.ID == ("UpdateNewMessage") and data.message_ and data.message_.sender_user_id_ then
+elseif data.ID == ("UpdateNewMessage") and msg.sender_user_id_ then
 msg = data.message_
 text = msg.content_.text_
 if (data.message_.content_.text_) then 
