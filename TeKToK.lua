@@ -2367,13 +2367,13 @@ for k,v in pairs(List_id) do
 tdcli_function({ID="GetChat",chat_id_=v},function(arg,chat) end,nil)
 end
 -- tdcli_function({ID="ForwardMessages",chat_id_=Id_Dev,from_chat_id_= msg.sender_user_id_,message_ids_={[0]=msg.id_},disable_notification_=1,from_background_=1},function(arg,data) 
-if data and data.messages_ and data.messages_[0] ~= false and data.ID ~= "Error" then
-if data and data.messages_ and data.messages_[0].content_.sticker_ then
-Send_Optionspv(Id_Dev,0,msg.sender_user_id_,"reply_Pv","⌔︙قام بارسال الملصق")  
-return false
-end
-end
-end,nil)
+-- if data and data.messages_ and data.messages_[0] ~= false and data.ID ~= "Error" then
+-- if data and data.messages_ and data.messages_[0].content_.sticker_ then
+-- Send_Optionspv(Id_Dev,0,msg.sender_user_id_,"reply_Pv","⌔︙قام بارسال الملصق")  
+-- return false
+-- end
+-- end
+-- end,nil)
 end
 if Dev_tektok(msg) then
 if msg.reply_to_message_id_ ~= 0  then    
